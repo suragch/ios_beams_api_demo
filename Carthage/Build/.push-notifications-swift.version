@@ -1,0 +1,10 @@
+{
+  "commitish" : "2.0.2",
+  "iOS" : [
+    {
+      "name" : "PushNotifications",
+      "hash" : "1b5308c7eeef724d2b18808acd0b0867b6b5eb67cc899e968ca38a6c3a01c04a",
+      "swiftToolchainVersion" : "5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)"
+    }
+  ]
+}

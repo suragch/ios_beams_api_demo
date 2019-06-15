@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:push-notifications-mac-objc/push-notifications-mac-objc.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:push-notifications-objc/push-notifications-objc.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:push-notifications-ios/push-notifications-ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:push-notifications-mac/push-notifications-mac.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:PushNotifications/PushNotifications.xcodeproj">
+   </FileRef>
+</Workspace>
