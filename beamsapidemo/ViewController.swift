@@ -3,8 +3,17 @@ import UIKit
 import PushNotifications
 
 class ViewController: UIViewController, InterestsChangedDelegate {
-
     
+    // get a reference to the PushNotifications instance
+    let beamsClient = PushNotifications.shared
+
+    // replace this with your own Pusher Beams Instance ID
+    // You can get this ID from the Beams dashboard: https://dash.pusher.com/beams
+    // Example:
+    // let instanceId = "111111111-22222-3333-aaaa-66666666666"
+    let instanceId = "afc7aaf1-3018-4709-adf8-e779bcd48551"
+    
+    var deviceToken: Data? = nil
     
     @IBOutlet weak var resultsView: UIView!
     @IBOutlet weak var resultsLabel: UILabel!
@@ -28,12 +37,8 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     
     // SDK
     
-    let beamsClient = PushNotifications.shared
-    var deviceToken: Data? = nil
-    
-    
     @IBAction func onStartTap(_ sender: UIButton) {
-        beamsClient.start(instanceId: "afc7aaf1-3018-4709-adf8-e779bcd48551")
+        beamsClient.start(instanceId: instanceId)
         showResultsInLabel(message: "SDK started")
     }
     
@@ -44,10 +49,16 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     }
     
     @IBAction func onRegisterWithAppleTap(_ sender: UIButton) {
+        // this method tells APNs that we want to be able to receive
+        // alert, badge, and sound notifications
         beamsClient.registerForRemoteNotifications()
         
+        // alternatively, you could register a request for different kinds
+        // of notifications. This one does alert and sound but not badge:
+        // beamsClient.registerForRemoteNotifications(options: [.alert, .sound])
     }
     
+    // I'm clalling this from AppDelegate.swift
     func myCallbackForApnsSuccessfullyRegistered(deviceToken: Data) {
         self.deviceToken = deviceToken
         showResultsInLabel(message: "app successfully registered with APNs")
@@ -56,7 +67,7 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     @IBAction func onRegisterWithPusherTap(_ sender: UIButton) {
         if let token = deviceToken {
             beamsClient.registerDeviceToken(token);
-            showResultsInLabel(message: "registered device token")
+            showResultsInLabel(message: "registering device token")
         } else {
             showResultsInLabel(message: "Failed. You need to register with Apple")
         }
@@ -65,9 +76,8 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     // Device Interests
     
     @IBAction func onGetInterestsTap(_ sender: UIButton) {
-        if let interests = beamsClient.getDeviceInterests() {
-            showResultsInLabel(message: "Interests: \(interests)")
-        }
+        guard let interests = beamsClient.getDeviceInterests() else { return }
+        showResultsInLabel(message: "Interests: \(interests)")
     }
     
     @IBAction func onSetInterestsTap(_ sender: UIButton) {
@@ -86,12 +96,8 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     }
     
     @IBAction func onClearInterestsTap(_ sender: UIButton) {
-        do {
-            try beamsClient.clearDeviceInterests()
-            showResultsInLabel(message: "Cleared interests")
-        } catch {
-            print("error")
-        }
+        try? beamsClient.clearDeviceInterests()
+        showResultsInLabel(message: "Cleared interests")
     }
     
     @IBAction func onAddInterestsTap(_ sender: UIButton) {
@@ -128,25 +134,30 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     
     @IBAction func onSetUserIdTap(_ sender: UIButton) {
         
+        // basic authentication credentials
         let userId = "Mary"
         let password = "mypassword"
         let data = "\(userId):\(password)".data(using: String.Encoding.utf8)!
         let base64 = data.base64EncodedString()
         
-        let serverIP = "192.168.1.3"
+        // Token Provider
+        let serverIP = "192.168.1.3" // change this to your server IP
         let tokenProvider = BeamsTokenProvider(authURL: "http://\(serverIP):8888/token") { () -> AuthData in
             let headers = ["Authorization": "Basic \(base64)"]
             let queryParams: [String: String] = [:]
             return AuthData(headers: headers, queryParams: queryParams)
         }
         
-        self.beamsClient.setUserId(userId, tokenProvider: tokenProvider, completion: { error in
+        // Get the Beams token and send it to Pusher
+        self.beamsClient.setUserId(
+            userId,
+            tokenProvider: tokenProvider,
+            completion: { error in
             guard error == nil else {
                 print(error.debugDescription)
                 return
             }
-            
-            self.showResultsInLabel(message: "Successfully authenticated with Pusher Beams")
+            self.showResultsInLabel(message: "Successfully authenticated with Beams")
         })
     }
     
@@ -158,20 +169,18 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     
     // Events
     
-    var timesInterestsChanged = 0
+    var interestsChangedCount = 0
     @IBOutlet weak var interestsChangedNumber: UILabel!
-    
     func interestsSetOnDeviceDidChange(interests: [String]) {
-        timesInterestsChanged += 1
-        interestsChangedNumber.text = String(timesInterestsChanged)
+        interestsChangedCount += 1
+        interestsChangedNumber.text = String(interestsChangedCount)
     }
     
-    var timesMessagesReceived = 0
+    var messagesReceivedCount = 0
     @IBOutlet weak var messagesReceivedLabel: UILabel!
-    
     func myCallbackForReceivedMessages(userInfo: [AnyHashable: Any]) {
-        timesMessagesReceived += 1
-        messagesReceivedLabel.text = String(timesMessagesReceived)
+        messagesReceivedCount += 1
+        messagesReceivedLabel.text = String(messagesReceivedCount)
         
         let message = extractUserInfo(userInfo: userInfo)
         showResultsInLabel(message: "New message: \(message.title), \(message.body)")
@@ -199,7 +208,6 @@ class ViewController: UIViewController, InterestsChangedDelegate {
             title = "Select interest to remove"
         }
         
-        // Create the action sheet
         let myActionSheet = UIAlertController(title: title, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         let appleAction = UIAlertAction(title: "apple", style: UIAlertAction.Style.default) { (action) in
             self.onSingleChoiceResult(chosenInterest: "apple", actionType: actionType)
@@ -216,14 +224,12 @@ class ViewController: UIViewController, InterestsChangedDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) { (action) in
         }
         
-        // add action buttons to action sheet
         myActionSheet.addAction(appleAction)
         myActionSheet.addAction(pearAction)
         myActionSheet.addAction(orangeAction)
         myActionSheet.addAction(bananaAction)
         myActionSheet.addAction(cancelAction)
         
-        // present the action sheet
         self.present(myActionSheet, animated: true, completion: nil)
     }
     

@@ -1,7 +1,9 @@
 
 
 import UIKit
-import PushNotifications
+
+// This is what you would import in a normal app:
+// import PushNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,15 +11,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     // This is what you would do in a normal app:
-    // let pushNotifications = PushNotifications.shared
+    // let beamsClient = PushNotifications.shared
 
     var viewController: ViewController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // This is what you would do in a normal app:
-        //self.pushNotifications.start(instanceId: "your_instance_id_here")
-        //self.pushNotifications.registerForRemoteNotifications()
+        //self.beamsClient.start(instanceId: "your_instance_id_here")
+        //self.beamsClient.registerForRemoteNotifications()
 
         viewController = window?.rootViewController as? ViewController
         return true
@@ -26,10 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
         // This is what you would do in a normal app:
-        // self.pushNotifications.registerDeviceToken(deviceToken)
+        // self.beamsClient.registerDeviceToken(deviceToken)
         
         // Update the UI and let the user choose when to register the device token with Pusher
         viewController?.myCallbackForApnsSuccessfullyRegistered(deviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error.localizedDescription)")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
