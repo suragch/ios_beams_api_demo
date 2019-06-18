@@ -11,7 +11,7 @@ class ViewController: UIViewController, InterestsChangedDelegate {
     // You can get this ID from the Beams dashboard: https://dash.pusher.com/beams
     // Example:
     // let instanceId = "111111111-22222-3333-aaaa-66666666666"
-    let instanceId = "afc7aaf1-3018-4709-adf8-e779bcd48551"
+    let instanceId = MyConfig.instanceId
     
     var deviceToken: Data? = nil
     
