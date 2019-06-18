@@ -9,9 +9,7 @@ class ViewController: UIViewController, InterestsChangedDelegate {
 
     // replace this with your own Pusher Beams Instance ID
     // You can get this ID from the Beams dashboard: https://dash.pusher.com/beams
-    // Example:
-    // let instanceId = "111111111-22222-3333-aaaa-66666666666"
-    let instanceId = MyConfig.instanceId
+    let instanceId = "your_instance_id_here"
     
     var deviceToken: Data? = nil
     

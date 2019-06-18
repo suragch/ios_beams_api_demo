@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB03F11D22B869E5005D711A /* MyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB03F11C22B869E5005D711A /* MyConfig.swift */; };
 		AB14AE4B22B1FE1000C78E5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB14AE4A22B1FE1000C78E5C /* AppDelegate.swift */; };
 		AB14AE4D22B1FE1000C78E5C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB14AE4C22B1FE1000C78E5C /* ViewController.swift */; };
 		AB14AE5022B1FE1000C78E5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB14AE4E22B1FE1000C78E5C /* Main.storyboard */; };
@@ -18,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AB03F11C22B869E5005D711A /* MyConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyConfig.swift; sourceTree = "<group>"; };
 		AB14AE4722B1FE1000C78E5C /* beamsapidemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = beamsapidemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB14AE4A22B1FE1000C78E5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB14AE4C22B1FE1000C78E5C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,7 +64,6 @@
 				AB14AE6022B4253900C78E5C /* beamsapidemo.entitlements */,
 				AB14AE4A22B1FE1000C78E5C /* AppDelegate.swift */,
 				AB14AE4C22B1FE1000C78E5C /* ViewController.swift */,
-				AB03F11C22B869E5005D711A /* MyConfig.swift */,
 				AB14AE6122B47EFA00C78E5C /* MultiChoiceAlertViewController.swift */,
 				AB14AE4E22B1FE1000C78E5C /* Main.storyboard */,
 				AB14AE5122B1FE1100C78E5C /* Assets.xcassets */,
@@ -186,7 +183,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB14AE6222B47EFA00C78E5C /* MultiChoiceAlertViewController.swift in Sources */,
-				AB03F11D22B869E5005D711A /* MyConfig.swift in Sources */,
 				AB14AE4D22B1FE1000C78E5C /* ViewController.swift in Sources */,
 				AB14AE4B22B1FE1000C78E5C /* AppDelegate.swift in Sources */,
 			);
