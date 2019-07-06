@@ -2,7 +2,7 @@
 
 Demonstration of the Pusher Beams client SDK for iOS
 
-This is a supplemental project for the article [Pusher Beams client API demo for iOS](TODO).
+This is a supplemental project for the article [Pusher Beams client API demo for iOS](https://pusher.com/tutorials/beams-api-demo-ios).
 
 ## Setup
 
